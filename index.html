@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Ankita — Three Years Later</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"></script>
+  <style>
+    :root {
+      --bg-obsidian: #0C0B0E;
+      --bg-card: rgba(25, 22, 30, 0.72);
+      --text-cream: #F5EFE6;
+      --text-muted: #B8AFA6;
+      --accent-gold: #D4AF37;
+      --accent-rose: #C97B84;
+      --border-subtle: rgba(212, 175, 55, 0.22);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-obsidian);
+      color: var(--text-cream);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--bg-obsidian);
+      min-height: 100vh;
+      position: relative;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient Background Aura & Floating Motes */
+    .ambient-aura {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(201, 123, 132, 0.14) 0%, transparent 52%),
+        radial-gradient(circle at 80% 78%, rgba(212, 175, 55, 0.10) 0%, transparent 48%),
+        radial-gradient(circle at 18% 65%, rgba(201, 123, 132, 0.08) 0%, transparent 45%);
+      animation: pulseAura 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes pulseAura {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.06); }
+    }
+
+    #motes-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top Audio Toggle */
+    .audio-toggle {
+      position: fixed;
+      top: 1.15rem;
+      right: 1.15rem;
+      z-index: 60;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(18, 16, 22, 0.78);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-cream);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.3s ease;
+    }
+
+    .audio-toggle:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .audio-bars {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 11px;
+    }
+
+    .audio-bars span {
+      width: 2px;
+      height: 4px;
+      background: var(--accent-gold);
+      border-radius: 2px;
+      transition: height 0.2s ease;
+    }
+
+    .audio-toggle.playing .audio-bars span:nth-child(1) { animation: soundBar 0.9s ease-in-out infinite; }
+    .audio-toggle.playing .audio-bars span:nth-child(2) { animation: soundBar 0.7s ease-in-out 0.2s infinite; }
+    .audio-toggle.playing .audio-bars span:nth-child(3) { animation: soundBar 0.85s ease-in-out 0.35s infinite; }
+
+    @keyframes soundBar {
+      0%, 100% { height: 3px; }
+      50% { height: 11px; }
+    }
+
+    /* Lock Screen Overlay */
+    #lock-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: radial-gradient(circle at 50% 35%, #17131D 0%, #0C0B0E 85%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      text-align: center;
+      transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.9s ease;
+    }
+
+    #lock-screen.unlocked {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .lock-card {
+      width: 100%;
+      max-width: 400px;
+      padding: 2.5rem 1.75rem;
+      border-radius: 24px;
+      background: rgba(24, 20, 30, 0.72);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(16px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .lock-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--accent-gold);
+      margin-bottom: 0.9rem;
+    }
+
+    .lock-title {
+      font-family: var(--font-serif);
+      font-size: 2.35rem;
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--text-cream);
+      margin-bottom: 0.65rem;
+    }
+
+    .lock-subtitle {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      margin-bottom: 1.75rem;
+    }
+
+    .passcode-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .passcode-input {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(245, 239, 230, 0.16);
+      background: rgba(12, 11, 14, 0.75);
+      color: var(--text-cream);
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 0.14em;
+      outline: none;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .passcode-input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.14);
+    }
+
+    .passcode-input.shake {
+      animation: shakeInput 0.42s ease;
+      border-color: var(--accent-rose);
+    }
+
+    @keyframes shakeInput {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    .unlock-btn {
+      width: 100%;
+      padding: 0.9rem 1.25rem;
+      border-radius: 12px;
+      border: none;
+      background: linear-gradient(135deg, #D4AF37 0%, #B89128 100%);
+      color: #0C0B0E;
+      font-family: var(--font-sans);
+      font-weight: 600;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.25s ease;
+    }
+
+    .unlock-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(212, 175, 55, 0.25);
+    }
+
+    .lock-hint {
+      margin-top: 1.15rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .lock-hint span {
+      color: var(--accent-rose);
+    }
+
+    .lock-error {
+      min-height: 1.1rem;
+      font-size: 0.8rem;
+      color: var(--accent-rose);
+      margin-top: 0.35rem;
+    }
+
+    .preview-unlock-btn {
+      position: fixed;
+      bottom: 1.15rem;
+      right: 1.15rem;
+      z-index: 55;
+      padding: 0.45rem 0.8rem;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px dashed rgba(245, 239, 230, 0.25);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .preview-unlock-btn:hover {
+      color: var(--text-cream);
+      border-color: var(--accent-gold);
+    }
+
+    /* Main Editorial Container */
+    main {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 0 1.35rem 6rem;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 4.5rem 0 2.5rem;
+    }
+
+    .hero-kicker {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 1.15rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.85rem, 8vw, 4.4rem);
+      font-weight: 500;
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      color: var(--text-cream);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--accent-rose);
+    }
+
+    .hero-lead {
+      max-width: 440px;
+      font-size: 1.02rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 2.75rem;
+    }
+
+    .scroll-cue {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      opacity: 0.8;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 44px;
+      background: linear-gradient(to bottom, var(--accent-gold), transparent);
+      animation: scrollPulse 2.2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { transform: scaleY(0.6); opacity: 0.4; }
+      50% { transform: scaleY(1); opacity: 1; }
+    }
+
+    /* Story Chapters */
+    .chapter {
+      margin: 4.5rem 0;
+      padding: 2.15rem 1.65rem;
+      border-radius: 24px;
+      background: var(--bg-card);
+      border: 1px solid rgba(245, 239, 230, 0.08);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1), transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .chapter.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .chapter-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.85rem;
+    }
+
+    .chapter-num {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+    }
+
+    .chapter-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(212, 175, 55, 0.35), transparent);
+    }
+
+    .chapter-heading {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--text-cream);
+      margin-bottom: 1rem;
+    }
+
+    .chapter-text {
+      font-size: 0.98rem;
+      color: #DDD4C7;
+      font-weight: 300;
+    }
+
+    .chapter-text + .chapter-text {
+      margin-top: 0.95rem;
+    }
+
+    .highlight-quote {
+      margin-top: 1.35rem;
+      padding-left: 1rem;
+      border-left: 2px solid var(--accent-rose);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.28rem;
+      line-height: 1.45;
+      color: var(--text-cream);
+    }
+
+    /* Polaroid Frame */
+    .polaroid-wrap {
+      margin: 1.85rem auto 0.4rem;
+      max-width: 310px;
+      perspective: 900px;
+    }
+
+    .polaroid {
+      background: #F6F1E9;
+      padding: 0.85rem 0.85rem 1.35rem;
+      border-radius: 6px;
+      box-shadow: 0 18px 36px rgba(0, 0, 0, 0.55);
+      transform: rotate(-1.6deg);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .polaroid.tilt-right {
+      transform: rotate(1.6deg);
+    }
+
+    .polaroid:hover {
+      transform: rotate(0deg) scale(1.02);
+      box-shadow: 0 22px 44px rgba(0, 0, 0, 0.65);
+    }
+
+    .polaroid-img-box {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      background: #1D1A22;
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .polaroid-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .polaroid-fallback {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 1.25rem;
+      color: #A89F96;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      gap: 0.45rem;
+    }
+
+    .polaroid-fallback.active {
+      display: flex;
+    }
+
+    .polaroid-caption {
+      margin-top: 0.85rem;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.15rem;
+      color: #2A2421;
+    }
+
+    /* Wax Seal Letter Section */
+    .letter-section {
+      margin-top: 5rem;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+
+    .letter-section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .seal-prompt {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 1.35rem;
+    }
+
+    .wax-seal-btn {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 2px solid rgba(245, 239, 230, 0.25);
+      background: radial-gradient(circle at 35% 30%, #D9828B 0%, #9E4752 68%, #6E2C35 100%);
+      box-shadow:
+        0 12px 30px rgba(201, 123, 132, 0.35),
+        inset 0 2px 6px rgba(255, 255, 255, 0.28),
+        inset 0 -4px 10px rgba(0, 0, 0, 0.45);
+      color: var(--text-cream);
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 1.45rem;
+      cursor: pointer;
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+      position: relative;
+    }
+
+    .wax-seal-btn:hover {
+      transform: scale(1.07);
+      box-shadow: 0 16px 38px rgba(201, 123, 132, 0.5);
+    }
+
+    .wax-seal-btn.broken {
+      transform: scale(0.85);
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+    }
+
+    .seal-sub {
+      font-family: var(--font-mono);
+      font-style: normal;
+      font-size: 0.56rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      margin-top: 2px;
+    }
+
+    /* Unfolded Letter Card */
+    .letter-card {
+      display: none;
+      text-align: left;
+      padding: 2.35rem 1.75rem;
+      border-radius: 24px;
+      background: linear-gradient(165deg, rgba(30, 25, 36, 0.92) 0%, rgba(18, 15, 22, 0.96) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+      animation: unfoldLetter 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .letter-card.open {
+      display: block;
+    }
+
+    @keyframes unfoldLetter {
+      0% { opacity: 0; transform: translateY(18px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .letter-salutation {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 500;
+      color: var(--accent-gold);
+      margin-bottom: 1.15rem;
+    }
+
+    .letter-body p {
+      font-size: 0.98rem;
+      color: #E6DDD0;
+      font-weight: 300;
+      margin-bottom: 1rem;
+    }
+
+    .letter-closing-line {
+      margin-top: 1.5rem;
+      padding-top: 1.35rem;
+      border-top: 1px solid rgba(212, 175, 55, 0.22);
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--text-cream);
+      text-align: center;
+    }
+
+    .letter-signoff {
+      margin-top: 1.15rem;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent-rose);
+    }
+
+    .replay-btn {
+      margin-top: 2rem;
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid rgba(245, 239, 230, 0.2);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .replay-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      color: rgba(184, 175, 166, 0.55);
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-aura"></div>
+  <canvas id="motes-canvas"></canvas>
+
+  <!-- Ambient Sound Toggle -->
+  <button id="audio-toggle" class="audio-toggle" aria-label="Toggle ambient music">
+    <span class="audio-bars">
+      <span></span><span></span><span></span>
+    </span>
+    <span id="audio-label">SOUND OFF</span>
+  </button>
+
+  <!-- Passcode Lock Screen -->
+  <section id="lock-screen" aria-label="Passcode Gate">
+    <div class="lock-card">
+      <span class="lock-badge">For Ankita</span>
+      <h1 class="lock-title">Three Years Later</h1>
+      <p class="lock-subtitle">A small story I made just for you, Momo.</p>
+
+      <form id="passcode-form" class="passcode-form" autocomplete="off">
+        <input
+          id="passcode-input"
+          class="passcode-input"
+          type="text"
+          placeholder="Enter passcode"
+          aria-label="Passcode"
+        />
+        <button type="submit" class="unlock-btn">Open</button>
+      </form>
+
+      <p id="lock-error" class="lock-error"></p>
+      <p class="lock-hint">Hint: <span>The day we first talked (in numbers)</span></p>
+    </div>
+
+    <button id="preview-unlock-btn" class="preview-unlock-btn" type="button">
+      Preview Unlock
+    </button>
+  </section>
+
+  <!-- Main Story Content -->
+  <main id="story-main">
+    <header class="hero">
+      <span class="hero-kicker">27 Oct 2023 &mdash; Present</span>
+      <h1 class="hero-title">One Mistake,<br /><em>Three Years Later</em></h1>
+      <p class="hero-lead">
+        It started with a random follow, an early birthday wish, and three years that kept bringing me back to you.
+      </p>
+      <div class="scroll-cue">
+        <span>Scroll slowly</span>
+        <div class="scroll-line"></div>
+      </div>
+    </header>
+
+    <!-- Chapter I -->
+    <article class="chapter">
+      <div class="chapter-meta">
+        <span class="chapter-num">Chapter I &bull; 27 Oct</span>
+        <div class="chapter-line"></div>
+      </div>
+      <h2 class="chapter-heading">The Early Birthday Wish</h2>
+      <p class="chapter-text">
+        It started when I noticed you stalking my profile, so I randomly followed you on 27th October. Your friends had posted &ldquo;Happy Birthday Eve&rdquo; stories, and I got confused and wished you Happy Birthday a whole day early&mdash;even though your real birthday was on the 28th.
+      </p>
+      <p class="chapter-text">
+        That funny little mistake started our first conversation, and soon I found myself liking everything about who you are.
+      </p>
+
+      <div class="polaroid-wrap">
+        <div class="polaroid">
+          <div class="polaroid-img-box">
+            <img
+              src="assets/photo-1.PNG"
+              alt="Memory 1"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.add('active');"
+            />
+            <div class="polaroid-fallback">
+              <span>[ assets/photo-1.PNG ]</span>
+              <span>Add your first photo here</span>
+            </div>
+          </div>
+          <p class="polaroid-caption">27 Oct &mdash; the best mistake I ever made</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Chapter II -->
+    <article class="chapter">
+      <div class="chapter-meta">
+        <span class="chapter-num">Chapter II &bull; The 3 Years</span>
+        <div class="chapter-line"></div>
+      </div>
+      <h2 class="chapter-heading">Growing Up &amp; Looking For You</h2>
+      <p class="chapter-text">
+        We only dated for a month before a misunderstanding got in the way. Looking back, I know I was immature back then and didn’t handle things the way I should have.
+      </p>
+      <p class="chapter-text">
+        Even though we ended, we still texted once every six or seven months. Over those three years, I tried moving on and met other people, only to realize I was looking for you in everyone&mdash;and my feelings for you only grew stronger.
+      </p>
+      <blockquote class="highlight-quote">
+        &ldquo;Even when we barely talked, you were always the one I was looking for.&rdquo;
+      </blockquote>
+    </article>
+
+    <!-- Chapter III -->
+    <article class="chapter">
+      <div class="chapter-meta">
+        <span class="chapter-num">Chapter III &bull; Same City</span>
+        <div class="chapter-line"></div>
+      </div>
+      <h2 class="chapter-heading">Living In The Same City</h2>
+      <p class="chapter-text">
+        During one of our catch-ups, you told me you were living right here in the same city.
+      </p>
+      <p class="chapter-text">
+        After three years of staying in touch from afar, realizing we were finally in the same place made everything click&mdash;I knew I couldn’t hold back how I felt anymore.
+      </p>
+
+      <div class="polaroid-wrap">
+        <div class="polaroid tilt-right">
+          <div class="polaroid-img-box">
+            <img
+              src="assets/photo-2.PNG"
+              alt="Memory 2"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.add('active');"
+            />
+            <div class="polaroid-fallback">
+              <span>[ assets/photo-2.PNG ]</span>
+              <span>Add your second photo here</span>
+            </div>
+          </div>
+          <p class="polaroid-caption">Same city, finally</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Chapter IV -->
+    <article class="chapter">
+      <div class="chapter-meta">
+        <span class="chapter-num">Chapter IV &bull; Now</span>
+        <div class="chapter-line"></div>
+      </div>
+      <h2 class="chapter-heading">Why It’s Always You</h2>
+      <p class="chapter-text">
+        What I love most now is the vibe I get from you&mdash;the warmth in the way you talk, and the gentle way you care for me. Being around you just feels easy and real.
+      </p>
+
+      <div class="polaroid-wrap">
+        <div class="polaroid">
+          <div class="polaroid-img-box">
+            <img
+              src="assets/photo-3.PNG"
+              alt="Memory 3"
+              onerror="this.style.display='none'; this.nextElementSibling.classList.add('active');"
+            />
+            <div class="polaroid-fallback">
+              <span>[ assets/photo-3.PNG ]</span>
+              <span>Add your third photo here</span>
+            </div>
+          </div>
+          <p class="polaroid-caption">My favorite vibe, always</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Wax Seal Letter -->
+    <section class="letter-section" id="letter-section">
+      <p class="seal-prompt" id="seal-prompt">Tap the seal to read my promise to you</p>
+
+      <button type="button" id="wax-seal-btn" class="wax-seal-btn" aria-label="Break wax seal">
+        <span>M</span>
+        <span class="seal-sub">Tap</span>
+      </button>
+
+      <div id="letter-card" class="letter-card">
+        <h3 class="letter-salutation">For Ankita &mdash; my Momo,</h3>
+        <div class="letter-body">
+          <p>
+            You told me to do this properly, and after three years, I want to do everything right by you.
+          </p>
+          <p>
+            I promise to always keep you happy, stand beside you, and give you everything you want in life and everything you truly deserve.
+          </p>
+        </div>
+
+        <p class="letter-closing-line">
+          Some things aren’t meant to be asked through a screen. Look up.
+        </p>
+
+        <p class="letter-signoff">Always yours, for my Momo</p>
+
+        <div style="text-align: center;">
+          <button type="button" id="replay-btn" class="replay-btn">Read Again</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Made with love for Ankita (Momo)</footer>
+
+  <script>
+    // 1. Passcode Validation (27/10 and flexible formats)
+    const lockScreen = document.getElementById('lock-screen');
+    const passcodeForm = document.getElementById('passcode-form');
+    const passcodeInput = document.getElementById('passcode-input');
+    const lockError = document.getElementById('lock-error');
+    const previewUnlockBtn = document.getElementById('preview-unlock-btn');
+
+    const validCodes = new Set([
+      '27/10',
+      '27-10',
+      '27.10',
+      '2710',
+      '27 10',
+      '27oct',
+      '27 oct',
+      'oct27',
+      'oct 27'
+    ]);
+
+    function unlockExperience() {
+      lockScreen.classList.add('unlocked');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    passcodeForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const raw = passcodeInput.value.trim().toLowerCase();
+      const normalized = raw.replace(/\s+/g, ' ');
+
+      if (validCodes.has(normalized) || validCodes.has(normalized.replace(/\s/g, ''))) {
+        lockError.textContent = '';
+        unlockExperience();
+      } else {
+        lockError.textContent = 'Not quite — try the date in numbers (DD/MM).';
+        passcodeInput.classList.remove('shake');
+        void passcodeInput.offsetWidth;
+        passcodeInput.classList.add('shake');
+      }
+    });
+
+    previewUnlockBtn.addEventListener('click', unlockExperience);
+
+    // 2. Scroll Reveal Observer
+    const revealTargets = document.querySelectorAll('.chapter, .letter-section');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      },
+      { threshold: 0.14 }
+    );
+
+    revealTargets.forEach((el) => observer.observe(el));
+
+    // 3. Wax Seal Letter Interaction
+    const waxSealBtn = document.getElementById('wax-seal-btn');
+    const sealPrompt = document.getElementById('seal-prompt');
+    const letterCard = document.getElementById('letter-card');
+    const replayBtn = document.getElementById('replay-btn');
+
+    waxSealBtn.addEventListener('click', () => {
+      waxSealBtn.classList.add('broken');
+      sealPrompt.style.display = 'none';
+      letterCard.classList.add('open');
+      setTimeout(() => {
+        letterCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 120);
+    });
+
+    replayBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // 4. Ambient Floating Light Motes Canvas
+    const canvas = document.getElementById('motes-canvas');
+    const ctx = canvas.getContext('2d');
+    let motes = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+
+    function initMotes() {
+      motes = [];
+      const count = Math.min(34, Math.floor(window.innerWidth / 24));
+      for (let i = 0; i < count; i++) {
+        motes.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.8 + 0.6,
+          vx: (Math.random() - 0.5) * 0.22,
+          vy: -Math.random() * 0.28 - 0.08,
+          alpha: Math.random() * 0.55 + 0.15,
+          gold: Math.random() > 0.45
+        });
+      }
+    }
+
+    function animateMotes() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const m of motes) {
+        m.x += m.vx;
+        m.y += m.vy;
+
+        if (m.y < -10) m.y = canvas.height + 10;
+        if (m.x < -10) m.x = canvas.width + 10;
+        if (m.x > canvas.width + 10) m.x = -10;
+
+        ctx.beginPath();
+        ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+        ctx.fillStyle = m.gold
+          ? `rgba(212, 175, 55, ${m.alpha})`
+          : `rgba(201, 123, 132, ${m.alpha})`;
+        ctx.fill();
+      }
+      requestAnimationFrame(animateMotes);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      initMotes();
+    });
+
+    resizeCanvas();
+    initMotes();
+    animateMotes();
+
+    // 5. Gentle Ambient Piano / Pad (Muted by default)
+    const audioToggle = document.getElementById('audio-toggle');
+    const audioLabel = document.getElementById('audio-label');
+    let isPlaying = false;
+    let synth = null;
+    let loop = null;
+
+    audioToggle.addEventListener('click', async () => {
+      if (!isPlaying) {
+        await Tone.start();
+        if (!synth) {
+          const reverb = new Tone.Reverb({ decay: 4.5, wet: 0.55 }).toDestination();
+          synth = new Tone.PolySynth(Tone.Synth, {
+            oscillator: { type: 'sine' },
+            envelope: { attack: 0.9, decay: 1.2, sustain: 0.4, release: 2.5 }
+          }).connect(reverb);
+          synth.volume.value = -16;
+
+          const chords = [
+            ['C4', 'E4', 'G4', 'B4'],
+            ['A3', 'C4', 'E4', 'G4'],
+            ['F3', 'A3', 'C4', 'E4'],
+            ['G3', 'B3', 'D4', 'F4']
+          ];
+          let step = 0;
+
+          loop = new Tone.Loop((time) => {
+            synth.triggerAttackRelease(chords[step % chords.length], '2n', time);
+            step++;
+          }, '1m');
+        }
+
+        Tone.Transport.bpm.value = 68;
+        loop.start(0);
+        Tone.Transport.start();
+        isPlaying = true;
+        audioToggle.classList.add('playing');
+        audioLabel.textContent = 'SOUND ON';
+      } else {
+        Tone.Transport.pause();
+        isPlaying = false;
+        audioToggle.classList.remove('playing');
+        audioLabel.textContent = 'SOUND OFF';
+      }
+    });
+  </script>
+</body>
+</html>
